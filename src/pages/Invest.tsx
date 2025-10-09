@@ -200,13 +200,13 @@ const loadDashboard = async () => {
             </div>
             
             <Input
-              label="Investment Amount"
-              type="number"
-              value={investAmount}
-              onChange={(e) => setInvestAmount(e.target.value)}
-              placeholder="Enter amount"
-              className="mb-4"
-            />
+               label="Investment Amount"
+                 type="number"
+                 value={selectedPlan.price}
+                    readOnly
+                    className="mb-4 bg-gray-800 text-gray-400 cursor-not-allowed"
+                    />
+
             
             {investAmount && parseFloat(investAmount) >= selectedPlan.price && (
               <div className="bg-gray-800 rounded-lg p-3 mb-4">
