@@ -23,7 +23,7 @@ import toast from 'react-hot-toast';
 
 // ---- replace your existing telegramUrl / whatsappUrl ----
 const TELEGRAM_USERNAME = (import.meta.env.VITE_TELEGRAM_URL || "SafeXExcpress").replace(/^https?:\/\/t\.me\/?/, '').replace(/^@+/, '').trim();
-const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_URL || "9198765410")
+const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_URL || "")
   .replace(/^\+/, '')
   .replace(/\D/g, '') // keep digits only
   .trim();

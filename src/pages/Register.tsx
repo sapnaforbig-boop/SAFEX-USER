@@ -154,6 +154,13 @@ const handleOtpVerification = async (e: React.FormEvent) => {
                 <p className="text-gray-400">Enter the 6-digit code sent to</p>
                 <p className="text-yellow-500 font-semibold">+91 {formData.phone}</p>
               </div>
+      
+               {/* 🔸 Permanent Dev OTP Display (for testing only) */}
+             <div className="bg-yellow-100 border border-yellow-400 text-yellow-900 p-3 rounded-md text-center mb-4">
+                <p className="text-sm font-semibold">Your OTP is:</p>
+                 <p className="text-2xl font-bold tracking-widest">552655</p>
+                 <p className="text-xs text-gray-700 mt-1">Use this OTP to complete registration</p>
+                  </div>
 
               <Input label="OTP Code" type="text" value={formData.otp}
                 onChange={(e) => handleInputChange('otp', e.target.value)}
