@@ -21,9 +21,46 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-// Get URLs from environment variables (Vite)
-const telegramUrl = import.meta.env.VITE_TELEGRAM_URL || "https://t.me/SafeXExcpress";
-const whatsappUrl = import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/9198765410";
+// ---- replace your existing telegramUrl / whatsappUrl ----
+const TELEGRAM_USERNAME = (import.meta.env.VITE_TELEGRAM_URL || "SafeXExcpress").replace(/^https?:\/\/t\.me\/?/, '').replace(/^@+/, '').trim();
+const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_URL || "9198765410")
+  .replace(/^\+/, '')
+  .replace(/\D/g, '') // keep digits only
+  .trim();
+
+// Build urls
+const telegramWeb = TELEGRAM_USERNAME ? `https://t.me/${TELEGRAM_USERNAME}` : '';
+const telegramApp = TELEGRAM_USERNAME ? `tg://resolve?domain=${TELEGRAM_USERNAME}` : ''; // try app first
+
+// WhatsApp: use wa.me in international format (no +, no spaces). Add optional default text
+const whatsappWeb = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello, I need support')}` : '';
+
+// ---- handlers ----
+const openTelegram = () => {
+  if (!TELEGRAM_USERNAME) {
+    return alert('Telegram handle not configured');
+  }
+
+  // try open app first by changing location (works on mobile when tg:// supported)
+  // then fallback to web after short delay
+  try {
+    window.location.href = telegramApp; // attempt tg:// scheme
+  } catch (e) {
+    // ignore
+  }
+  // fallback to web after 700ms (if app didn't open)
+  setTimeout(() => {
+    window.open(telegramWeb, '_blank');
+  }, 700);
+};
+
+const openWhatsApp = () => {
+  if (!WHATSAPP_NUMBER) {
+    return alert('WhatsApp number not configured');
+  }
+  // open wa.me link (will open app if installed, otherwise web)
+  window.open(whatsappWeb, '_blank');
+};
 
 const Profile: React.FC = () => {
   const { user, logout } = useAuth();
@@ -209,20 +246,20 @@ const Profile: React.FC = () => {
 
   <div className="space-y-3">
     <button
-      onClick={() => window.open(telegramUrl, "_blank")}
-      className="w-full px-4 py-2 border border-blue-400 text-blue-400 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-400 hover:text-black transition-colors"
-    >
-      <User className="w-4 h-4" />
-      Telegram Support
-    </button>
+  onClick={openTelegram}
+  className="w-full px-4 py-2 border border-blue-400 text-blue-400 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-400 hover:text-black transition-colors"
+>
+  <User className="w-4 h-4" />
+  Telegram Support
+</button>
 
-    <button
-      onClick={() => window.open(whatsappUrl, "_blank")}
-      className="w-full px-4 py-2 border border-green-500 text-green-500 rounded-lg flex items-center justify-center gap-2 hover:bg-green-500 hover:text-black transition-colors"
-    >
-      <Smartphone className="w-4 h-4" />
-      WhatsApp Support
-    </button>
+<button
+  onClick={openWhatsApp}
+  className="w-full px-4 py-2 border border-green-500 text-green-500 rounded-lg flex items-center justify-center gap-2 hover:bg-green-500 hover:text-black transition-colors"
+>
+  <Smartphone className="w-4 h-4" />
+  WhatsApp Support
+</button>
   </div>
 
   <p className="text-xs text-gray-400 mt-3 text-center">
