@@ -21,44 +21,66 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-// ---- replace your existing telegramUrl / whatsappUrl ----
-const TELEGRAM_USERNAME = (import.meta.env.VITE_TELEGRAM_URL || "SafeXExcpress").replace(/^https?:\/\/t\.me\/?/, '').replace(/^@+/, '').trim();
-const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_URL || "")
-  .replace(/^\+/, '')
-  .replace(/\D/g, '') // keep digits only
+// ---- TELEGRAM / WHATSAPP CONFIG & HANDLERS (single clean block) ----
+
+// use your exact username string here (case-insensitive)
+const TELEGRAM_USERNAME = "SafeXExcpress"
+  .replace(/^https?:\/\/t\.me\/?/, '')
+  .replace(/^@+/, '')
   .trim();
 
-// Build urls
+// Build URLs (single declaration)
 const telegramWeb = TELEGRAM_USERNAME ? `https://t.me/${TELEGRAM_USERNAME}` : '';
-const telegramApp = TELEGRAM_USERNAME ? `tg://resolve?domain=${TELEGRAM_USERNAME}` : ''; // try app first
+const telegramApp = TELEGRAM_USERNAME ? `tg://resolve?domain=${TELEGRAM_USERNAME}` : '';
 
-// WhatsApp: use wa.me in international format (no +, no spaces). Add optional default text
-const whatsappWeb = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello, I need support')}` : '';
+// WhatsApp: ensure number is digits only (you can set VITE_WHATSAPP_URL env or keep empty)
+const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_URL || "")
+  .replace(/^\+/, '')
+  .replace(/\D/g, '')
+  .trim();
 
-// ---- handlers ----
+const whatsappWeb = WHATSAPP_NUMBER
+  ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello, I need support')}`
+  : '';
+
+// Robust openTelegram with visibility fallback
 const openTelegram = () => {
   if (!TELEGRAM_USERNAME) {
-    return alert('Telegram handle not configured');
+    alert('Telegram handle not configured');
+    return;
   }
 
-  // try open app first by changing location (works on mobile when tg:// supported)
-  // then fallback to web after short delay
+  let opened = false;
+
+  const onVisibilityChange = () => {
+    if (document.hidden) {
+      opened = true;
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    }
+  };
+  document.addEventListener('visibilitychange', onVisibilityChange);
+
   try {
-    window.location.href = telegramApp; // attempt tg:// scheme
-  } catch (e) {
+    // try native app first
+    window.location.href = telegramApp;
+  } catch (err) {
     // ignore
   }
-  // fallback to web after 700ms (if app didn't open)
+
+  // if app didn't open, fallback to web after 800ms
   setTimeout(() => {
-    window.open(telegramWeb, '_blank');
-  }, 700);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+    if (!opened) {
+      window.open(telegramWeb, '_blank');
+    }
+  }, 800);
 };
 
 const openWhatsApp = () => {
   if (!WHATSAPP_NUMBER) {
-    return alert('WhatsApp number not configured');
+    alert('WhatsApp number not configured');
+    return;
   }
-  // open wa.me link (will open app if installed, otherwise web)
   window.open(whatsappWeb, '_blank');
 };
 
