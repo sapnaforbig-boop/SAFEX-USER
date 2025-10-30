@@ -21,6 +21,10 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+// Get URLs from environment variables (Vite)
+const telegramUrl = import.meta.env.VITE_TELEGRAM_URL || "https://t.me/@SafeXExcpress";
+const whatsappUrl = import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/919876543210";
+
 const Profile: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -192,6 +196,38 @@ const Profile: React.FC = () => {
           Install our app for the best experience and offline access
         </p>
       </Card>
+       
+       {/* Contact Us Section */}
+<Card gradient className="mx-4 mt-6 p-4">
+  <h4 className="font-semibold mb-3 flex items-center gap-2">
+    <Settings className="w-5 h-5 text-yellow-500" />
+    Contact Support
+  </h4>
+
+  <div className="space-y-3">
+    <Button
+  onClick={() => window.open(telegramUrl, "_blank")}
+  variant="outline"
+  className="w-full flex items-center justify-center gap-2 border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black transition-colors"
+>
+  <User className="w-4 h-4" />
+  Contact on Telegram
+</Button>
+
+<Button
+  onClick={() => window.open(whatsappUrl, "_blank")}
+  variant="outline"
+  className="w-full flex items-center justify-center gap-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-black transition-colors"
+>
+  <Smartphone className="w-4 h-4" />
+  Chat on WhatsApp
+</Button>
+  </div>
+
+  <p className="text-xs text-gray-400 mt-3 text-center">
+    Our support team is available 24×7 to help you.
+  </p>
+</Card>
 
       {/* Logout */}
       <div className="mx-4 mt-6 mb-20">
