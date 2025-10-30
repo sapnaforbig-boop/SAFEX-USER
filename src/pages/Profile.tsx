@@ -22,7 +22,7 @@ import {
 import toast from 'react-hot-toast';
 
 // Get URLs from environment variables (Vite)
-const telegramUrl = import.meta.env.VITE_TELEGRAM_URL || "https://t.me/@SafeXExcpress";
+const telegramUrl = import.meta.env.VITE_TELEGRAM_URL || "https://t.me/SafeXExcpress";
 const whatsappUrl = import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/919876543210";
 
 const Profile: React.FC = () => {
