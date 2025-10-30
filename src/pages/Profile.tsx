@@ -197,28 +197,37 @@ const Profile: React.FC = () => {
         </p>
       </Card>
        
-{/* Contact Us Section - TEMP TEST */}
-<Card gradient className="mx-4 mt-6 p-4">
-  <h4 className="font-semibold mb-3 flex items-center gap-2">
-    <Settings className="w-5 h-5 text-yellow-500" />
-    Contact Support (TEST)
+       {/* Contact Us Section */}
+<Card
+  gradient
+  className="mx-4 mt-6 p-4 h-auto border border-yellow-600 bg-gray-900/80"
+>
+  <h4 className="font-semibold mb-3 flex items-center gap-2 text-yellow-400">
+    <Settings className="w-5 h-5 text-yellow-400" />
+    Contact Support
   </h4>
 
   <div className="space-y-3">
     <button
       onClick={() => window.open(telegramUrl, "_blank")}
-      className="w-full px-4 py-2 border border-blue-400 text-blue-400 rounded-lg"
+      className="w-full px-4 py-2 border border-blue-400 text-blue-400 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-400 hover:text-black transition-colors"
     >
-      Test Telegram
+      <User className="w-4 h-4" />
+      Telegram Support
     </button>
 
     <button
       onClick={() => window.open(whatsappUrl, "_blank")}
-      className="w-full px-4 py-2 border border-green-500 text-green-500 rounded-lg"
+      className="w-full px-4 py-2 border border-green-500 text-green-500 rounded-lg flex items-center justify-center gap-2 hover:bg-green-500 hover:text-black transition-colors"
     >
-      Test WhatsApp
+      <Smartphone className="w-4 h-4" />
+      WhatsApp Support
     </button>
   </div>
+
+  <p className="text-xs text-gray-400 mt-3 text-center">
+    Our support team is available 24×7 to help you.
+  </p>
 </Card>
       {/* Logout */}
       <div className="mx-4 mt-6 mb-20">
