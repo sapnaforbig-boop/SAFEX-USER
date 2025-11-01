@@ -16,7 +16,6 @@ class ApiClient {
     const config: RequestInit = {
       ...options,
       cache: "no-store",
-        mode: "cors",
       headers: {
         ...this.getAuthHeaders(),
         ...options.headers,
