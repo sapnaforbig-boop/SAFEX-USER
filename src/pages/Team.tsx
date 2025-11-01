@@ -21,20 +21,24 @@ const Team: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [referralTree, setReferralTree] = useState<any>(null);
+const [referralTree, setReferralTree] = useState<any>(null);
 const [referralBonus, setReferralBonus] = useState<number>(0);
 
+// Read referral base from env or fallback to current origin
+const referralBase =
+  (import.meta && (import.meta as any).env && (import.meta as any).env.VITE_REFERRAL_BASE) ||
+  window.location.origin;
 
-  const referralLink = `https://safexexpress.app/register?ref=${user?.referral?.code}`;
-
-  
+// Safe referral link generation
+const referralCode = (user && (user as any).referral?.code) || "";
+const referralLink = referralCode
+  ? `${referralBase.replace(/\/$/, '')}/register?ref=${encodeURIComponent(referralCode)}`
+  : `${referralBase.replace(/\/$/, '')}/register`;
 
 useEffect(() => {
   const loadReferralData = async () => {
     try {
-      const res = await api.getReferral(); // returns object directly
-      // backend returns data: { referralCode, totalEarnings, directReferrals, levelStats }
-      // For safety:
+      const res = await api.getReferral();
       setReferralTree(res || {});
       setReferralBonus(res?.totalEarnings || 0);
     } catch (error) {
@@ -45,23 +49,22 @@ useEffect(() => {
   loadReferralData();
 }, []);
 
+const handleCopyLink = () => {
+  navigator.clipboard.writeText(referralLink);
+  toast.success('Referral link copied!');
+};
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(referralLink);
-    toast.success('Referral link copied!');
-  };
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Join SafeXExpress',
-        text: 'Start earning with SafeXExpress. Use my referral code to get started!',
-        url: referralLink,
-      });
-    } else {
-      handleCopyLink();
-    }
-  };
+const handleShare = () => {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Join SafeXExpress',
+      text: 'Start earning with SafeXExpress. Use my referral code to get started!',
+      url: referralLink,
+    });
+  } else {
+    handleCopyLink();
+  }
+};
 
   return (
     <div className="min-h-screen bg-black text-white">
