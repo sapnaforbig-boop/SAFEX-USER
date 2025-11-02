@@ -158,7 +158,7 @@ const handleOtpVerification = async (e: React.FormEvent) => {
                {/* 🔸 Permanent Dev OTP Display (for testing only) */}
              <div className="bg-yellow-100 border border-yellow-400 text-yellow-900 p-3 rounded-md text-center mb-4">
                 <p className="text-sm font-semibold">Your OTP is:</p>
-                 <p className="text-2xl font-bold tracking-widest">552556</p>
+                 <p className="text-2xl font-bold tracking-widest">741258</p>
                  <p className="text-xs text-gray-700 mt-1">Use this OTP to complete registration</p>
                   </div>
 
