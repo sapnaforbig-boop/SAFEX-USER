@@ -52,6 +52,7 @@ useEffect(() => {
 const handleCopyLink = () => {
   navigator.clipboard.writeText(referralLink);
   toast.success('Referral link copied!');
+
 };
 
 const handleShare = () => {
@@ -114,6 +115,10 @@ const handleShare = () => {
           <Share className="w-5 h-5 text-yellow-500" />
           Referral Link
         </h4>
+        
+        <p className="text-xs text-gray-400 mb-2">
+          Grow with us — earn $150 for every successful referral. Message us.
+        </p>
         
         <div className="bg-gray-800 rounded-lg p-3 mb-3">
           <p className="text-sm text-gray-300 break-all font-mono">
