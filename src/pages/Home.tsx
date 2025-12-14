@@ -34,7 +34,7 @@ const Home: React.FC = () => {
   const quotes = [
     { 
       id: 1, 
-      text: "Grow with us_earn $150 for every successful referral message us.",
+      text: "Grow with us_earn RS200 for every successful referral message us  (not on activation plan).",
       bg: "from-green-500 to-emerald-700",
       icon: "💸"
     },
